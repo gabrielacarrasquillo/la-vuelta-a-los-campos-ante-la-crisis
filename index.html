@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html>
+<title>This is MY title</title>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapbox Storytelling</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/mapbox/assembly/publisher-staging/src/svgs/mapbox.svg">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/intersection-observer@0.12.0/intersection-observer.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+<!-- Map styling -->
+    <style>
+        html {
+            background: #f9f6ef;
+        }
+        body {
+            margin:0;
+            padding:0;
+            font-family: sans-serif;
+        }
+        a, a:hover, a:visited {
+            color: #0071bc;
+        }
+        #map {
+            top:0;
+            height: 100vh;
+            width:100vw;
+            position:sticky;
+        }
+        #mapInset {
+            bottom:50px;
+            right:30px;
+            height: 180px;
+            width:250px;
+            max-width:100%;
+            position: fixed;
+            z-index: 1;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+        }
+        #mapInset .mapboxgl-ctrl-bottom-left{
+            display: none;
+        }
+        @media (max-width: 500px) {
+            #mapInset {
+                display: none;
+            }
+        }
+        /* #header {
+            margin: auto;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+        #header h1, #header h2, #header p {
+            margin: 0;
+            padding: 2vh 2vw;
+            text-align: center;
+        } */
+        #footer {
+            width: 100%;
+            min-height: 5vh;
+            padding-top: 2vh;
+            padding-bottom: 1rem;
+            text-align: left;
+            line-height: 25px;
+            font-size: 13px;
+            position: relative;
+            z-index: 5;
+        }
+        #features {
+            padding-top: 10vh;
+            padding-bottom: 10vh;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .centered {
+            width: 50vw;
+            margin: 0 auto;
+        }
+        .lefty {
+            width: 33vw;
+            margin-left: 5vw;
+        }
+        .righty {
+            width: 33vw;
+            margin-left: 62vw;
+        }
+        .fully {
+            width: 100%;
+            margin: auto;
+        }
+        .light {
+            color: #444;
+            background-color: #f9f6ef;
+        }
+        .dark {
+            color: #fafafa;
+            background-color: #444;
+        }
+        .step {
+            padding-bottom: 50vh;
+            /* margin-bottom: 10vh; */
+            opacity: 0.25;
+        }
+        .step.active {
+            opacity: 0.9;
+        }
+
+        .step div {
+            padding:  25px 50px;
+            line-height: 25px;
+            font-size: 13px;
+        }
+
+        .step img {
+            width: 100%;
+        }
+
+        @media (max-width: 750px) {
+            .centered, .lefty, .righty, .fully {
+                width: 90vw;
+                margin: 0 auto;
+            }
+        }
+
+        /* Fix issue on mobile browser where scroll breaks  */
+        .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan,
+        .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan .mapboxgl-canvas {
+            touch-action: unset;
+        }
+
+        </style>
+        <style>
+
+            .section {
+                max-width: 760px;
+                margin: 0 auto;
+            }
+            body {
+                margin: 0;
+                padding: 30px 10px;
+                font-family: 'Serif', Georgia;
+            }
+        
+            .serif {
+                font-family: 'Lora', serif;
+            }
+        
+            .sans-serif {
+                font-family: 'Open Sans', sans-serif;
+            }
+        
+            /* choose a light or dark theme to add to the body tag. */
+            .dark-theme {
+                background-color: #151515;
+                color: #fbfbfb;
+            }
+        
+            .light-theme {
+                background-color: white;
+                color: black;
+            }
+        
+            .header {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+        
+            .story-body,
+            .header,
+            .chart-section,
+            .footer {
+                margin: auto;
+                max-width: 700px;
+            }
+        
+            .footer {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+        
+            .chart-section.wide {
+                width: 100%;
+                max-width: 1200px;
+            }
+        
+            .chart-section.wide p.chart-title {
+                width: 100%;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        
+            .chart-section.wide p.chart-subhead {
+                width: 100%;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        
+        
+            /* text styles */
+        
+            /* https://cssgenerator.org/text-shadow-css-generator.html */
+            /* #shadow {
+                text-shadow: 3px 4px 2px rgba(233, 105, 105, 0.6);
+            } */
+        
+        
+            p.kicker {
+                font-size: 1rem;
+                text-transform: uppercase;
+            }
+        
+            .text-center {
+                text-align: center;
+            }
+        
+            h1.headline {
+                font-size: 2rem;
+                line-height: 1.1;
+                margin-bottom: 0.25rem;
+                margin-top: 1rem;
+                font-weight: 800;
+            }
+        
+            h2.subhead {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                margin-bottom: 0;
+                margin-top: 15px;
+                font-weight: 400;
+            }
+        
+            p.body-text {
+                font-size: 1.1rem;
+                line-height: 1.4;
+                margin:35px
+            }
+        
+            h3.section-head {
+                font-size: 2rem;
+                margin: 40px 0 10px 0;
+                font-weight: 700;
+                line-height: 1.3;
+            }
+        
+            .byline {
+                font-size: 1.1rem;
+                line-height: 0.75;
+                margin-top: 1.5rem;
+                font-weight: 500;
+            }
+        
+            .date {
+                font-size: 0.85rem;
+                line-height: 1;
+                margin-top: 10px;
+                font-weight: 400;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        
+        
+            p.note {
+                font-size: 0.85rem;
+            }
+        
+            /* chart styles */
+        
+            .chart-section {
+                width: 100%;
+                max-width: 1200px;
+                padding: 20px 0px;
+            }
+        
+            .story-body .chart-section {
+                padding-top: 0px;
+            }
+        
+        
+            .chart-row {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+        
+            p.chart-title {
+                font-size: 1.3rem;
+                font-weight: 700;
+                max-width: 700px;
+                margin: 0px auto 5px auto;
+            }
+        
+            p.chart-subhead {
+                margin: 0 auto;
+                max-width: 700px;
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+        
+            p.chart-label {
+                margin: 0 0 5px 0;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                font-weight: 600;
+            }
+        
+            .chart-row .chart {
+                width: 100%;
+                padding-right: 15px;
+                min-width: calc(25% - 15px);
+        
+            }
+        
+        
+        
+            p.chart-source {
+                font-size: 0.85rem;
+                margin: 0;
+                margin-bottom: 3rem;
+                
+            }
+        
+        
+        
+        
+        
+            /* photos */
+        
+            .photo-section {
+                padding: 30px 0px;
+                width: 100%;
+                margin: auto;
+                display: flex;
+                max-width: 1200px;
+            }
+        
+            .photo {
+                width: 100%;
+                padding-right: 15px;
+            }
+        
+            .photo img {
+                width: 100%;
+            }
+        
+            p.caption {
+                font-size: 0.9rem;
+                margin: 0;
+            }
+        
+            /* mobile */
+            @media (max-width:700px) {
+        
+                .chart-row {
+                    display: block;
+                }
+        
+                .chart-row .chart {
+                    padding: 0;
+                }
+        
+                .photo-section {
+                    display: block;
+                }
+        
+                .photo {
+                    padding: 0;
+                }
+                
+                .section {
+                    max-width: 760px;
+                    
+                }
+                .image-shadow {
+                    box-shadow: 2px 2px 2px 2px #888888;
+                    float: center;    
+                    margin: 80px 25px 80px 25px;
+                }
+        
+            }
+        </style>
+</head>
+<body>
+
+<section class="">
+    <div class="container title p"    >
+        <p class="kicker">Comunidades</p>
+        <h1 class="headline">A long enough but interesting title here</h1>
+        <h4 class="subhead"><i>A two sentence subheading.</i></h4>
+        <p class="byline">By Gabriela A. Carrasquillo Piñeiro</p>
+        <p class="date"> August 8, 2022</p>
+        <p class="subhead"><i>“Una cita interesante.” -Coralys Marquez 2021</i></p>
+        <img class=" image-shadow"; src="PORTADA_brigada_familiar_eltimon.jpg" style="float:center;width:700px;height:400px;" >
+        <p class="chart-source">Foto: Finca Agroecológica El Josco Bravo</p>
+    </div>
+    <div class="body-text section">
+        <p>Párrafo 1</p>
+        <p>Párrafo 2</p>
+        <img class="imagen"  src="comparison.jpg" style="float:center">
+        <p class="chart-source text-center">Párrafos y más párrafos probably</p>
+        <p>algo mas probs</p>
+    </div>
+</section>
+
+<style>
+    /* Esta imagen es la de comparison */
+        .imagen {
+        top:0;
+        height: 48vh;
+        width:60vw;
+        position:relative;
+    }
+        .container.title {
+        overflow: hidden;
+        background: #f9f6ef;
+        height: 115vh;
+        /* 70vh = 70% of the height of the window */
+    }
+        /* .title video {
+        position: absolute;
+        top: 0;
+        left: 0;
+    } */
+        .title {
+        text-align: center;
+        position: center;
+        z-index: 10;
+        padding-top: 3rem;
+    }
+</style>
+
+<section>
+    <div id="map"></div>
+    <div id="mapInset"></div>
+    <div id="story"></div>
+
+    <script src="./config.js"></script>
+    <script>
+    var initLoad = true;
+    var layerTypes = {
+        'fill': ['fill-opacity'],
+        'line': ['line-opacity'],
+        'circle': ['circle-opacity', 'circle-stroke-opacity'],
+        'symbol': ['icon-opacity', 'text-opacity'],
+        'raster': ['raster-opacity'],
+        'fill-extrusion': ['fill-extrusion-opacity'],
+        'heatmap': ['heatmap-opacity']
+    }
+
+    var alignments = {
+        'left': 'lefty',
+        'center': 'centered',
+        'right': 'righty',
+        'full': 'fully'
+    }
+
+    function getLayerPaintType(layer) {
+        var layerType = map.getLayer(layer).type;
+        return layerTypes[layerType];
+    }
+
+    function setLayerOpacity(layer) {
+        var paintProps = getLayerPaintType(layer.layer);
+        paintProps.forEach(function(prop) {
+            var options = {};
+            if (layer.duration) {
+                var transitionProp = prop + "-transition";
+                options = { "duration": layer.duration };
+                map.setPaintProperty(layer.layer, transitionProp, options);
+            }
+            map.setPaintProperty(layer.layer, prop, layer.opacity, options);
+        });
+    }
+
+    var story = document.getElementById('story');
+    var features = document.createElement('div');
+    features.setAttribute('id', 'features');
+
+    var header = document.createElement('div');
+
+    if (config.title) {
+        var titleText = document.createElement('h1');
+        titleText.innerText = config.title;
+        header.appendChild(titleText);
+    }
+
+    if (config.subtitle) {
+        var subtitleText = document.createElement('h2');
+        subtitleText.innerText = config.subtitle;
+        header.appendChild(subtitleText);
+    }
+
+    if (config.byline) {
+        var bylineText = document.createElement('p');
+        bylineText.innerText = config.byline;
+        header.appendChild(bylineText);
+    }
+
+    if (header.innerText.length > 0) {
+        header.classList.add(config.theme);
+        header.setAttribute('id', 'header');
+        story.appendChild(header);
+    }
+
+    config.chapters.forEach((record, idx) => {
+        var container = document.createElement('div');
+        var chapter = document.createElement('div');
+
+        if (record.title) {
+            var title = document.createElement('h3');
+            title.innerText = record.title;
+            chapter.appendChild(title);
+        }
+
+        if (record.image) {
+            var image = new Image();
+            image.src = record.image;
+            chapter.appendChild(image);
+        }
+
+        if (record.description) {
+            var story = document.createElement('p');
+            story.innerHTML = record.description;
+            chapter.appendChild(story);
+        }
+// STEP ??
+        container.setAttribute('id', record.id);
+        container.classList.add('step');
+        if (idx === 0) {
+            container.classList.add('active');
+        }
+
+        chapter.classList.add(config.theme);
+        container.appendChild(chapter);
+        container.classList.add(alignments[record.alignment] || 'centered');
+        if (record.hidden) {
+            container.classList.add('hidden');
+        }
+        features.appendChild(container);
+    });
+
+    story.appendChild(features);
+
+    var footer = document.createElement('div');
+
+    if (config.footer) {
+        var footerText = document.createElement('p');
+        footerText.innerHTML = config.footer;
+        footer.appendChild(footerText);
+    }
+
+    if (footer.innerText.length > 0) {
+        footer.classList.add(config.theme);
+        footer.setAttribute('id', 'footer');
+        story.appendChild(footer);
+    }
+
+    mapboxgl.accessToken = config.accessToken;
+
+    const transformRequest = (url) => {
+        const hasQuery = url.indexOf("?") !== -1;
+        const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
+        return {
+        url: url + suffix
+        }
+    }
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: config.style,
+        center: config.chapters[0].location.center,
+        zoom: config.chapters[0].location.zoom,
+        bearing: config.chapters[0].location.bearing,
+        pitch: config.chapters[0].location.pitch,
+        interactive: false,
+        transformRequest: transformRequest,
+        projection: config.projection
+    });
+
+    // Create a inset map if enabled in config.js
+    if (config.inset) {
+    var insetMap = new mapboxgl.Map({
+        container: 'mapInset', // container id
+        style: 'mapbox://styles/mapbox/dark-v10', //hosted style id
+        center: config.chapters[0].location.center,
+        // Hardcode above center value if you want insetMap to be static.
+        zoom: 3, // starting zoom
+        hash: false,
+        interactive: false,
+        attributionControl: false,
+        //Future: Once official mapbox-gl-js has globe view enabled,
+        //insetmap can be a globe with the following parameter.
+        //projection: 'globe'
+    });
+    }
+
+    if (config.showMarkers) {
+        var marker = new mapboxgl.Marker({ color: config.markerColor });
+        marker.setLngLat(config.chapters[0].location.center).addTo(map);
+    }
+
+    // instantiate the scrollama
+    var scroller = scrollama();
+
+
+    map.on("load", function() {
+        if (config.use3dTerrain) {
+            map.addSource('mapbox-dem', {
+                'type': 'raster-dem',
+                'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                // https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/19/1/1@2x.vector.jpg90?access_token=pk.eyJ1IjoiZ2FiaWVhbGUxMyIsImEiOiJjbDVvN2I1MzUwOWdvM2NvN3cydzZxcjZoIn0.1ytIqrGLVQMZxll_T5RN9w
+                'tileSize': 512,
+                'maxzoom': 14
+            });
+            // add the DEM source as a terrain layer with exaggerated height
+            map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+            // add a sky layer that will show when the map is highly pitched
+            map.addLayer({
+                'id': 'sky',
+                'type': 'sky',
+                'paint': {
+                    'sky-type': 'atmosphere',
+                    'sky-atmosphere-sun': [0.0, 0.0],
+                    'sky-atmosphere-sun-intensity': 15
+                }
+            });
+        };
+
+        // As the map moves, grab and update bounds in inset map.
+        if (config.inset) {
+        map.on('move', getInsetBounds);
+        }
+        // setup the instance, pass callback functions
+        scroller
+        .setup({
+            step: '.step',
+            offset: 0.5,
+            progress: true
+        })
+        .onStepEnter(async response => {
+            var chapter = config.chapters.find(chap => chap.id === response.element.id);
+            response.element.classList.add('active');
+            map[chapter.mapAnimation || 'flyTo'](chapter.location);
+            // Incase you do not want to have a dynamic inset map,
+            // rather want to keep it a static view but still change the
+            // bbox as main map move: comment out the below if section.
+            if (config.inset) {
+            if (chapter.location.zoom < 5) {
+                insetMap.flyTo({center: chapter.location.center, zoom: 0});
+            }
+            else {
+                insetMap.flyTo({center: chapter.location.center, zoom: 3});
+            }
+            }
+            if (config.showMarkers) {
+                marker.setLngLat(chapter.location.center);
+            }
+            if (chapter.onChapterEnter.length > 0) {
+                chapter.onChapterEnter.forEach(setLayerOpacity);
+            }
+            if (chapter.callback) {
+                window[chapter.callback]();
+            }
+            if (chapter.rotateAnimation) {
+                map.once('moveend', () => {
+                    const rotateNumber = map.getBearing();
+                    map.rotateTo(rotateNumber + 180, {
+                        duration: 30000, easing: function (t) {
+                            return t;
+                        }
+                    });
+                });
+            }
+        })
+        .onStepExit(response => {
+            var chapter = config.chapters.find(chap => chap.id === response.element.id);
+            response.element.classList.remove('active');
+            if (chapter.onChapterExit.length > 0) {
+                chapter.onChapterExit.forEach(setLayerOpacity);
+            }
+        });
+    });
+
+    //Helper functions for insetmap
+    function getInsetBounds() {
+                let bounds = map.getBounds();
+
+                let boundsJson = {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [
+                                [
+                                    [
+                                        bounds._sw.lng,
+                                        bounds._sw.lat
+                                    ],
+                                    [
+                                        bounds._ne.lng,
+                                        bounds._sw.lat
+                                    ],
+                                    [
+                                        bounds._ne.lng,
+                                        bounds._ne.lat
+                                    ],
+                                    [
+                                        bounds._sw.lng,
+                                        bounds._ne.lat
+                                    ],
+                                    [
+                                        bounds._sw.lng,
+                                        bounds._sw.lat
+                                    ]
+                                ]
+                            ]
+                        }
+                    }]
+                }
+
+                if (initLoad) {
+                    addInsetLayer(boundsJson);
+                    initLoad = false;
+                } else {
+                    updateInsetLayer(boundsJson);
+                }
+
+            }
+
+    function addInsetLayer(bounds) {
+        insetMap.addSource('boundsSource', {
+            'type': 'geojson',
+            'data': bounds
+        });
+
+        insetMap.addLayer({
+            'id': 'boundsLayer',
+            'type': 'fill',
+            'source': 'boundsSource', // reference the data source
+            'layout': {},
+            'paint': {
+                'fill-color': '#fff', // blue color fill
+                'fill-opacity': 0.2
+            }
+        });
+        // // Add a black outline around the polygon.
+        insetMap.addLayer({
+            'id': 'outlineLayer',
+            'type': 'line',
+            'source': 'boundsSource',
+            'layout': {},
+            'paint': {
+                'line-color': '#000',
+                'line-width': 1
+            }
+        });
+    }
+
+    function updateInsetLayer(bounds) {
+        insetMap.getSource('boundsSource').setData(bounds);
+    }
+
+
+
+    // setup resize event
+    window.addEventListener('resize', scroller.resize);
+
+    </script>
+</section>
+
+
+  <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+  
+</head>
+
+<section class="body-text section">
+    <img src=""; style="";>
+    <p>Párrafo 4</p>
+    <p>Párrafo 5</p>
+    <p>Párrafo 6</p>
+</section>
+
+</body>
+</html>
