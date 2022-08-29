@@ -9,10 +9,6 @@ var config = {
     inset: false,
     theme: 'light',
     use3dTerrain: true, //set true for enabling 3D maps.
-    // title: 'The Title Text of this Story',
-    // subtitle: 'A descriptive and interesting subtitle to draw in the reader',
-    // byline: 'By a Digital Storyteller',
-    // footer: 'Note: Por razones de seguridad, los puntos no representan la localización exacta de las fincas. Data: Agroecological organizations. <br> Created using <a href="https://github.com/mapbox/storytelling" target="_blank">Mapbox Storytelling</a> template.',
     chapters: [
         {
             id: 'parte-3',
