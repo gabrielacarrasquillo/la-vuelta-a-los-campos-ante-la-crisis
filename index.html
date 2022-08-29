@@ -70,6 +70,7 @@
             font-size: 13px;
             position: relative;
             z-index: 5;
+            padding-left:1rem
         }
         #features {
             padding-top: 10vh;
@@ -234,13 +235,13 @@
                 line-height: 2rem;
                 margin-bottom: 0;
                 margin-top: 15px;
-                font-weight: 400;
+                font-weight: 200;
             }
         
             p.body-text {
-                font-size: 1.1rem;
-                line-height: 1.4;
-                margin:35px
+                font-size: 2rem;
+                line-height: 2;
+                margin:45px
             }
         
             h3.section-head {
@@ -269,6 +270,9 @@
         
             p.note {
                 font-size: 0.85rem;
+                text-align:right;
+                margin-left: 6rem;
+                margin-right: 5px;
             }
         
             /* chart styles */
@@ -323,7 +327,7 @@
             p.chart-source {
                 font-size: 0.85rem;
                 margin: 0;
-                margin-bottom: 3rem;
+                margin-bottom: 1rem;
                 
             }
         
@@ -334,7 +338,7 @@
             /* photos */
         
             .photo-section {
-                padding: 30px 0px;
+                padding: 10 px 0px;
                 width: 100%;
                 margin: auto;
                 display: flex;
@@ -392,20 +396,20 @@
 <section class="">
     <div class="container title p"    >
         <p class="kicker">Comunidades</p>
-        <h1 class="headline">A long enough but interesting title here</h1>
-        <h4 class="subhead"><i>A two sentence subheading.</i></h4>
+        <h1 class="headline">La vuelta a los campos ante la crisis</h1>
+        <p class="subhead"><i>El regreso a la tierra para practicar la agricultura ecológica ha sido la apuesta de familias y personas jóvenes por alcanzar la seguridad alimentaria en sus comunidades mediante el rescate de lo ancestral</i></p>
         <p class="byline">By Gabriela A. Carrasquillo Piñeiro</p>
-        <p class="date"> August 8, 2022</p>
-        <p class="subhead"><i>“Una cita interesante.” -Coralys Marquez 2021</i></p>
-        <img class=" image-shadow"; src="PORTADA_brigada_familiar_eltimon.jpg" style="float:center;width:700px;height:400px;" >
-        <p class="chart-source">Foto: Finca Agroecológica El Josco Bravo</p>
+        <p class="date"> August 29, 2022</p>
+        <p class="note"><i>“Darse cuenta de que en realidad hay un orgullo por nuestra cultura, una cultura que ha querido ser tapada por el colonialismo”. -Coralys Marquez</i></p>
+        <img class="photo-section image-shadow"; src="PORTADA_brigada_familiar_eltimon.jpg" style="float:center;width:700px;height:400px;" >
+        <p class="chart-source">Foto: Finca El Timón</p>
     </div>
     <div class="body-text section">
-        <p>Párrafo 1</p>
-        <p>Párrafo 2</p>
-        <img class="imagen"  src="comparison.jpg" style="float:center">
-        <p class="chart-source text-center">Párrafos y más párrafos probably</p>
-        <p>algo mas probs</p>
+        <p>El ritmo de las montañas es distinto, el aire make its way a los pulmones con mayor facilidad, y contrario a la ciudad, los caminos fluyen según la estructura del terreno. Así es la agroecología: la práctica agrícola centrada en el uso de los recursos naturales reproduciendo los procesos de la naturaleza de manera sostenible. </p>
+        <p>“Trata de optimizar las interacciones entre las plantas, los animales, los seres humanos y el medio ambiente, al mismo tiempo que aborda la necesidad de sistemas alimentarios socialmente equitativos en los que las personas puedan elegir lo que comen, cómo y dónde se produce”, define la Food and Agriculture Organization (FAO).</p>
+        <img class="photo-section"  src="comparison.jpg">
+        <p class="chart-source text-center"><b>Izquierda:</b >Monocultivos en una finca en Puerto Rico. <b>Derecha:</b>Siembra agroeclógica que integra las cosechas.</p>
+        <p>La práctica industrial tradicional de la agricultura está basada en el monocultivo, la siembra de un solo producto, mientras que la práctica ecológica puede integrar múltiples productos en un mismo terreno. A raíz de esta tendencia, para nutrir los monocultivos se utilizan fertilizantes sintéticos, a la vez que en los pluricultivos se utiliza composta de desechos vegetales y animales descompuestos y hasta fermentos. Ambas formas además se pueden distinguir por el uso de tractores versus tracción animal en el caso de la agroecológica.</p>
     </div>
 </section>
 
@@ -421,6 +425,8 @@
         overflow: hidden;
         background: #f9f6ef;
         height: 115vh;
+        margin-left: 20rem;
+        margin-right: 20rem;
         /* 70vh = 70% of the height of the window */
     }
         /* .title video {
@@ -786,10 +792,30 @@
 </head>
 
 <section class="body-text section">
-    <img src=""; style="";>
-    <p>Párrafo 4</p>
-    <p>Párrafo 5</p>
-    <p>Párrafo 6</p>
+    <p>Los proyectos educativos forman parte importante del trabajo de estas fincas. <i>“Yo entiendo que la razón es la apropiación o mejor dicho el empoderamiento para apropiarnos de nuestra educación y lo que queremos promover y lograr. La creación de espacios seguros y educativos, de creación y experimentación de nuestras culturas de agricultura”</i>, dice la campesina y agricultora Coralys Márquez, nativa del municipio de Lares.
+    </p>
+    <p>Brigadas, intercambios, canastas de productos, colaboraciones: A grandes rasgos, así es cómo se relacionan grupos de proyectos agroecológicos entre sí. Su visión es clara, frente al impacto del cambio climático y la recesión económica en Puerto Rico, hace falta trabajar por asegurar una <b>soberanía alimentaria</b> en momentos de crisis. Estos campesinos aseguran haber encontrado la respuesta en la agricultura ecológica, que les ha permitido tener acceso a alimentos cuando las góndolas están vacías. 
+    </p>
+    <h3 class="subhead">Subtítulo</h3>
+    <p>Coralys Márquez, quien gestiona la Finca El Timón en Lares junto a Augusto Andrés, asegura que en este movimiento se destaca la juventud que, tras el huracán María, ha demostrado mayor interés por la agricultura, especialmente por estas técnicas que conservan el ambiente. Además, han vuelto su mirada a quienes llaman “maestros”, agricultores de la zona centro de la isla que aún conservan conocimientos ancestrales como el uso de la yunta de bueyes indios criollos. 
+    </p>
+    <img class="photo-section"; src="students_josco.jpg">
+    <p class="chart-source">Fotos: Proyecto Agroecológico El Josco Bravo.</p>
+    <p>La joven piensa que la conservación de conocimientos de técnicas como el uso del buey Criollo en la zona montañosa ha ocurrido por la necesidad que ha habido en esta zona de seguir produciendo sus propios alimentos, a pesar de que la agricultura familiar dejó de ser el principal medio de sustento de las familias puertorriqueñas a mediados del siglo pasado. 
+    </p>
+    <p><i>“También, han sido personas que han sido criadas de esta forma, como Tato Alvarado, que es una persona clave en los saberes ancestrales, es una persona que se crió toda su vida en esto, inclusive su madre le enseñó a ordeñar con una vaca india criolla. Esta persona siempre estuvo clara de la importancia de estos saberes y de por qué debemos buscar la forma de ser autosustentables”</i>, comentó.
+    </p>
+    <img class="photo-section"; src="alvarado.png">
+    <p class="chart-source">Foto: tesis de maestría La Yunta Boricua, por Coralys Márquez. En la imagen, Edgardo “Tato” Alvarado, quien administra la Finca el Guaraguao y fundó la organización agroecológica Boricuá, que agrupa y apoya a decenas de proyectos agroecológicos.
+    </p>
+    <p><i>“Está ese lado de las personas que han tenido esa conciencia y han dicho, ‘esperate, yo no puedo dejar caer esto, tengo que seguir reproduciéndolo para que las próximas generaciones lo tengan’, entonces es cuando subimos nosotros (la juventud) y lo asume”,</i> concluyó.</p>
+    <p>El crecimiento del movimiento, dice, se da dentro del contexto de un Puerto Rico en que la gente tiene más acceso a información y comienza a estar más conciente sobre el impacto negativo que la revolución verde está teniendo en la salud. Con esto se refiere al aumento en el uso de tecnologías como plaguicidas, herbicidas y fertilizantes para aumentar la producción agrícola que inició en la década de los 60 en los Estados Unidos. 
+    </p>
+    <p>Esta conciencia ha llevado a que el agricultor local cuyos productos están en desventaja en los supermercados, desde sus organizaciones gestionen sus propios mercados agroecológicos. 
+    </p>
+    <img class="photo-section"; src="mercados.jpg">
+    <p><i>"Los jóvenes comienzan a darse más cuenta de esto, y ahí es que empiezan a moverse para sembrar la semilla. También es el amor inmenso por esos saberes, por esa cultura [campesina]. Como dicen por ahí ‘yo soy jíbaro hasta el hueso’, hay una canción…  nosotros y los maestros lo asumimos realmente”</i>, reflexionó.
+    </p>
 </section>
 
 </body>
