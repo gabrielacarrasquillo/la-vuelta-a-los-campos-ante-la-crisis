@@ -16,7 +16,7 @@ var config = {
             hidden: false,
             title: '',
             image: 'mon.png',
-            description: 'Una mirada cercana a proyectos agrícolas que se identifican como agroecológicos, se encontraron al menos 93 iniciativas campesinas, y 80 de estas indican, en sus redes sociales, el pueblo en dónde se ubican. En su mayoría se encuentran en municipios en zonas montañosas. ',
+            description: 'Una mirada cercana a proyectos agrícolas que se identifican como agroecológicos en Puerto Rico, se encontraron al menos 93 iniciativas campesinas, y 80 de estas indican, en sus redes sociales, el pueblo en dónde se ubican. En su mayoría se encuentran en municipios en zonas montañosas. ',
             location: {
                 center: [-66.51191, 18.38216],
                 zoom: 8.35,
