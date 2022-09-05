@@ -35,7 +35,7 @@ var config = {
             onChapterEnter: [
                 { layer: 'puntos-fincas',
                 opacity: 1,
-                duration: 2000
+                duration: 4000
                 },
                 { layer: 'puntos-edu',
                 opacity: 0,
