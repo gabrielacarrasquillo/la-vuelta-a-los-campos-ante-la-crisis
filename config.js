@@ -90,6 +90,10 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                { layer: 'puntos-fincas',
+                opacity: 1,
+                duration: 4000
+                },
                 { layer: 'region_metro',
                 opacity: 1,
                 duration: 1000
@@ -140,6 +144,10 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                { layer: 'puntos-fincas',
+                opacity: 1,
+                duration: 4000
+                },
                 { layer: 'region_metro',
                 opacity: 1,
                 duration: 1000
@@ -219,6 +227,11 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                
+                { layer: 'puntos-fincas',
+                opacity: 1,
+                duration: 4000
+                },
                 { layer: 'puntos-edu',
                 opacity: 1,
                 duration: 2000
